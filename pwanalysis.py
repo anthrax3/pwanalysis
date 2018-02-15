@@ -31,7 +31,7 @@ class Engine(object):
         analyzer = AnalysisEngine(mode=self.mode)
 
         for block in pw_parser.get_pw_block():
-            print(block)
+            print(analyzer.run_analysis_modules(block))
 
 
 

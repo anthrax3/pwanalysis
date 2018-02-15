@@ -3,4 +3,6 @@ from analytics.base import AnalysisModuleTemplate
 
 
 class ComparisonAnalyzer(AnalysisModuleTemplate):
-    pass
+
+    def run(self, dataset, mode):
+        return []

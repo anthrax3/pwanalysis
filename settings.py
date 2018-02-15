@@ -23,8 +23,8 @@ class FUNCTIONS:
     )
 
     MODULES = {
-        FREQ_ANALYSIS: 'analytics.frequencies',
-        USER_PASS_COMP: 'analytics.comparisons',
+        FREQ_ANALYSIS: 'analytics.frequencies.FreqAnalyzer',
+        USER_PASS_COMP: 'analytics.comparisons.ComparisonAnalyzer',
     }
 
 
