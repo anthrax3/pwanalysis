@@ -6,6 +6,20 @@ from Exceptions import PWAnalysisException
 class AnalysisModuleTemplate(object):
 
     def run(self, dataset, mode):
+        results = []
+
+        if mode == MODES.MODE_USERPASS:
+            results = self.analyze_userpass(dataset)
+
+        elif mode == MODES.MODE_PASSWORD:
+            results = self.analyze_pass(dataset)
+
+        return results
+
+    def analyze_userpass(self, dataset):
+        return []
+
+    def analyze_pass(self, dataset):
         return []
 
 

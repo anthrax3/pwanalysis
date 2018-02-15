@@ -4,8 +4,9 @@ from analytics.base import AnalysisModuleTemplate
 
 class FreqAnalyzer(AnalysisModuleTemplate):
 
-    def run(self, dataset, mode):
+    def analyze_userpass(self, dataset):
+        return ['freq']
 
-        test = "test"
+    def analyze_pass(self, dataset):
+        return ['freq']
 
-        return []
