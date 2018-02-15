@@ -1,0 +1,4 @@
+
+
+class PWAnalysisException(Exception):
+    pass

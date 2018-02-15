@@ -1,0 +1,8 @@
+
+*.pyc
+*.egg
+
+hashes.dmp
+
+resources/
+
