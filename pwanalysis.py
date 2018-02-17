@@ -30,9 +30,12 @@ class Engine(object):
 
         analyzer = AnalysisEngine(mode=self.mode)
 
+        top_ten = []
         for block in pw_parser.get_pw_block():
-            print(analyzer.run_analysis_modules(block))
+            results = analyzer.run_analysis_modules(block)
 
+            # print(sorted(results.iteritems(), key=lambda k, v: (k, v)))
+            print(results)
 
 
 if __name__ == "__main__":

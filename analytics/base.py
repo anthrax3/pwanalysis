@@ -1,6 +1,16 @@
 
-from settings import MODES, FUNCTIONS
+import logging
+
+from settings import MODES, FUNCTIONS, CONSTANTS
 from Exceptions import PWAnalysisException
+
+logger = logging.getLogger(__name__)
+if CONSTANTS.DEBUG:
+    logger.setLevel(logging.DEBUG)
+else:
+    logger.setLevel(logging.WARNING)
+fh = logging.FileHandler(CONSTANTS.LOGFILE)
+logger.addHandler(fh)
 
 
 class AnalysisModuleTemplate(object):
@@ -17,10 +27,10 @@ class AnalysisModuleTemplate(object):
         return results
 
     def analyze_userpass(self, dataset):
-        return []
+        return {}
 
     def analyze_pass(self, dataset):
-        return []
+        return {}
 
 
 class AnalysisEngine(object):
@@ -44,7 +54,10 @@ class AnalysisEngine(object):
         for m, path in FUNCTIONS.MODULES.items():
             if m in modules and m not in self.modules:
                 # self.modules[m] = __import__(path)
-                self.modules[m] = self.import_modules(path)
+                try:
+                    self.modules[m] = self.import_modules(path)
+                except ImportError:
+                    logger.error('Unable to load module: %s, Continuing without it.' % path)
 
     def import_modules(self, name):
         components = str(name).split('.')
@@ -53,6 +66,13 @@ class AnalysisEngine(object):
         return getattr(mod, clazz)()
 
     def run_analysis_modules(self, dataset):
+        """
+        Run all registered analysis modules on the given dataset.
+        A registered analysis module is one that is successfully loaded for execution using the dynamic loader
+        :param dataset:
+        :return:
+        """
+
         result_set = {}
 
         for name, module in self.modules.items():
