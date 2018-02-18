@@ -2,6 +2,8 @@
 import argparse
 import logging
 
+from collections import Counter
+
 from settings import MODES, CONSTANTS
 from analytics.base import AnalysisEngine
 
@@ -20,6 +22,9 @@ class Engine(object):
     mode = None
     filepath = None
 
+    analyzer = None
+    results = {}
+
     def __init__(self, mode, filepath):
         self.mode = mode
         self.filepath = filepath
@@ -28,14 +33,54 @@ class Engine(object):
         from preprocessing.parsing import PWDumpParser
         pw_parser = PWDumpParser(filepath=self.filepath)
 
-        analyzer = AnalysisEngine(mode=self.mode)
+        self.analyzer = AnalysisEngine(mode=self.mode)
 
-        top_ten = []
         for block in pw_parser.get_pw_block():
-            results = analyzer.run_analysis_modules(block)
+            r = self.analyzer.run_analysis_modules(block)
+            self._merge_results(r)
+            # print('Block Results: %s' % r)
 
-            # print(sorted(results.iteritems(), key=lambda k, v: (k, v)))
-            print(results)
+        # print('Ledger: %s' % (self.results, ))
+        print(sorted(self.results['Frequency Analysis']['pass_ngram_freqs'].items(), key=lambda x: -x[1]))
+
+    def _merge_results(self, new_results):
+        """
+        Iterates through loaded modules (names are keys in results) and adds the results to the general results ledger.
+        Each module has multiple results dicts from their various analytics functions
+
+        Example:
+            keys = ['module1', 'module2']
+
+            results {
+                'module1': {
+                    'analytics1': {...}
+                    'analytics2': {...}
+                    ...
+                },
+                'module2': {
+                    ...
+                },
+                ...
+            }
+
+        NOTE: This method allows for combination of results from files that are too large to store im memory.
+
+        :param new_results:
+        :return:
+        """
+        keys = self.analyzer.get_loaded_modules()
+
+        for key in keys:
+            ledger_mod_results = self.results.get(key, None)
+            new_mod_results = new_results.get(key, {})
+            if not ledger_mod_results:
+                self.results[key] = new_mod_results
+                continue
+
+            # Add each new result set from the associated analytics function to the ledger
+            for analytics_func, analytics_dict in new_mod_results.items():
+                self.results[key][analytics_func] = dict(Counter(self.results[key][analytics_func]) +
+                                                         Counter(analytics_dict))
 
 
 if __name__ == "__main__":

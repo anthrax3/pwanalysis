@@ -18,7 +18,7 @@ class FreqAnalyzer(AnalysisModuleTemplate):
 
         return {
             'user_ngram_freqs': user_ngram_freqs,
-            'pass_ngram_freq': pass_ngram_freqs,
+            'pass_ngram_freqs': pass_ngram_freqs,
         }
 
     def analyze_pass(self, dataset):

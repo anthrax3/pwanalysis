@@ -81,6 +81,9 @@ class AnalysisEngine(object):
 
         return result_set
 
+    def get_loaded_modules(self):
+        return self.modules.keys()
+
 
 
 
