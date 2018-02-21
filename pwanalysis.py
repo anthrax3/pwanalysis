@@ -31,7 +31,7 @@ class Engine(object):
 
     def run(self):
         from preprocessing.parsing import PWDumpParser
-        pw_parser = PWDumpParser(filepath=self.filepath)
+        pw_parser = PWDumpParser(filepath=self.filepath, mode=self.mode)
 
         self.analyzer = AnalysisEngine(mode=self.mode)
 
@@ -41,7 +41,7 @@ class Engine(object):
             # print('Block Results: %s' % r)
 
         # print('Ledger: %s' % (self.results, ))
-        print(sorted(self.results['Frequency Analysis']['pass_ngram_freqs'].items(), key=lambda x: -x[1]))
+        self._print_top_ngrams()
 
     def _merge_results(self, new_results):
         """
@@ -81,6 +81,13 @@ class Engine(object):
             for analytics_func, analytics_dict in new_mod_results.items():
                 self.results[key][analytics_func] = dict(Counter(self.results[key][analytics_func]) +
                                                          Counter(analytics_dict))
+
+    def _print_top_ngrams(self):
+
+        max_len = len(sorted(self.results['Frequency Analysis']['pass_ngram_freqs'].keys(), key=lambda x: -len(x))[0])
+        for i in range(1, max_len+1):
+            tmp = {k: v for k, v in self.results['Frequency Analysis']['pass_ngram_freqs'].items() if len(k) == i}
+            print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])))
 
 
 if __name__ == "__main__":

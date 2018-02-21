@@ -4,11 +4,15 @@ from analytics.base import AnalysisModuleTemplate
 
 class FreqAnalyzer(AnalysisModuleTemplate):
 
+    FREQ_USER_NGRAMS = 'user_ngram_freqs'
+    FREQ_PASS_NGRAMS = 'pass_ngram_freqs'
+
     def analyze_userpass(self, dataset):
         """
         Run all analytics on a user-pass dataset
-        :param dataset:
-        :return: dictionary of various results
+
+        :param dataset: a list of (user, pass) tuples
+        :return: dictionary of this module's results
         """
 
         users, passes = self._gen_wordlist_from_userpass(dataset)
@@ -17,19 +21,31 @@ class FreqAnalyzer(AnalysisModuleTemplate):
         pass_ngram_freqs = self._n_gram_freq(passes)
 
         return {
-            'user_ngram_freqs': user_ngram_freqs,
-            'pass_ngram_freqs': pass_ngram_freqs,
+            self.FREQ_USER_NGRAMS: user_ngram_freqs,
+            self.FREQ_PASS_NGRAMS: pass_ngram_freqs,
         }
 
     def analyze_pass(self, dataset):
-        return {}
+        """
+        Run all analytics on a password list
+
+        :param dataset: list of password strings
+        :return: dictionary of this module's results
+        """
+
+        pass_ngram_freqs = self._n_gram_freq(dataset)
+
+        return {
+            self.FREQ_PASS_NGRAMS: pass_ngram_freqs,
+        }
 
     def _gen_wordlist_from_userpass(self, userpass_dataset):
         """
         Take a user-pass dataset and split it into two wordlists, a user and password word list
         Remove any extensions from emails on the usernames (the '@' and anything after it)
-        :param userpass_dataset:
-        :return: user wordlist, pass wordlist
+
+        :param userpass_dataset: list of (user, pass) tuples
+        :return: tuple: (user wordlist, pass wordlist)
         """
         user_wordlist = [str(user)[0:str(user).index('@')] for user, pw in userpass_dataset]
         pass_wordlist = [str(pw) for user, pw in userpass_dataset]

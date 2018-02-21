@@ -1,7 +1,7 @@
 
 import logging
 
-from settings import CONSTANTS
+from settings import CONSTANTS, MODES
 
 logger = logging.getLogger(__name__)
 
@@ -9,9 +9,11 @@ logger = logging.getLogger(__name__)
 class PWDumpParser(object):
 
     filepath = None
+    mode = None
 
-    def __init__(self, filepath):
+    def __init__(self, filepath, mode):
         self.filepath = filepath
+        self.mode = mode
 
     def _load_file(self, filepath):
         raise NotImplementedError()
@@ -30,8 +32,12 @@ class PWDumpParser(object):
         for line in block:
             try:
                 line = str(line).strip()
-                user, pw = line.split(CONSTANTS.DELIM)
-                parsed_lines.append((user, pw))
+
+                if self.mode == MODES.MODE_USERPASS:
+                    line = line.split(CONSTANTS.DELIM)
+
+                parsed_lines.append(line)
+
             except Exception:
                 logging.warning('could not parse line: %s' % line)
 
