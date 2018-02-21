@@ -51,12 +51,15 @@ class PWDumpParser(object):
             while not eof:
 
                 for i in range(CONSTANTS.BLOCK_SIZE):
-                    line = f.readline()
-                    if line:
-                        raw_lines.append(line)
-                    else:
-                        eof = True
-                        break
+                    try:
+                        line = f.readline()
+                        if line:
+                            raw_lines.append(line)
+                        else:
+                            eof = True
+                            break
+                    except UnicodeDecodeError:
+                        logger.error('Could not parse line. Skipping line.')
 
                 parsed_lines = self._parse_block(raw_lines)
                 raw_lines = []
