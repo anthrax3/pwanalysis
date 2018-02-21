@@ -3,13 +3,16 @@ This project provides a set of tools for analyzing password dumps. It is extensi
 to include further analysis modules. A description on module creation and addition is included in this readme.
 
 ```
-usage: pwanalysis.py [-h] [--userpass USERPASS] [--pw PW] [-v]
+usage: pwanalysis.py [-h] [--userpass USERPASS] [--pw PW] [-v] [--block BLOCK]
 
-optional arguments:  
-    -h, --help           show this help message and exit  
-    --userpass USERPASS  A file that contains the usernames and passwords (in the standard <user>:<pass> format) on each line  
-    --pw PW              A file that contains a password on each line  
-    -v, --verbose        Verbose output mode  
+optional arguments:
+  -h, --help           show this help message and exit
+  --userpass USERPASS  A file that contains the usernames and passwords (in
+                       the standard <user>:<pass> format) on each line
+  --pw PW              A file that contains a password on each line
+  -v, --verbose        Verbose output mode
+  --block BLOCK        Block (chunk) size to read from file at a time (for
+                       memory optimization) (Default: 10000) 
 ```
 
 ## Built-In Modules
