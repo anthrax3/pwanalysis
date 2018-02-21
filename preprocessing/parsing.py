@@ -43,14 +43,16 @@ class PWDumpParser(object):
 
         return parsed_lines
 
-    def get_pw_block(self):
+    def get_pw_block(self, size=None):
+
+        block_size = size if size else CONSTANTS.BLOCK_SIZE
 
         raw_lines = []
         with open(self.filepath, 'r') as f:
             eof = False
             while not eof:
 
-                for i in range(CONSTANTS.BLOCK_SIZE):
+                for i in range(block_size):
                     try:
                         line = f.readline()
                         if line:

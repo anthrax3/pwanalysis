@@ -21,13 +21,19 @@ class Engine(object):
 
     mode = None
     filepath = None
+    block_size = None
 
     analyzer = None
     results = {}
 
-    def __init__(self, mode, filepath):
+    def __init__(self, mode, filepath, block_size=None):
         self.mode = mode
         self.filepath = filepath
+
+        if block_size:
+            self.block_size = block_size
+        else:
+            self.block_size = CONSTANTS.BLOCK_SIZE
 
     def run(self):
         from preprocessing.parsing import PWDumpParser
@@ -38,8 +44,8 @@ class Engine(object):
         print('Starting Analysis Engine...')
 
         counter = 1
-        for block in pw_parser.get_pw_block():
-            print('Executing block (size=%s) number %s' % (CONSTANTS.BLOCK_SIZE, counter))
+        for block in pw_parser.get_pw_block(self.block_size):
+            print('Executing block (size=%s) number %s' % (self.block_size, counter))
             r = self.analyzer.run_analysis_modules(block)
             self._merge_results(r)
             counter += 1
@@ -113,6 +119,12 @@ if __name__ == "__main__":
         '--verbose',
         help='Verbose output mode',
         action='store_true')
+    parser.add_argument(
+        '--block',
+        type=int,
+        help='Block (chunk) size to read from file at a time (for memory optimization) (Default: %s)' %
+             CONSTANTS.BLOCK_SIZE
+    )
 
     args = parser.parse_args()
 
@@ -124,9 +136,9 @@ if __name__ == "__main__":
 
     engine = None
     if args.userpass:
-        engine = Engine(mode=MODES.MODE_USERPASS, filepath=args.userpass)
+        engine = Engine(mode=MODES.MODE_USERPASS, filepath=args.userpass, block_size=args.block)
     if args.pw:
-        engine = Engine(mode=MODES.MODE_PASSWORD, filepath=args.pw)
+        engine = Engine(mode=MODES.MODE_PASSWORD, filepath=args.pw, block_size=args.block)
 
     if engine:
         engine.run()
