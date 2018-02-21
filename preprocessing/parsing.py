@@ -3,7 +3,7 @@ import logging
 
 from settings import CONSTANTS, MODES
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 
 class PWDumpParser(object):

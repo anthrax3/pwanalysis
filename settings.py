@@ -4,7 +4,7 @@ class CONSTANTS:
     LOGFILE = 'resources/pwanalysis.log'
 
     # Input File constants
-    BLOCK_SIZE = 50
+    BLOCK_SIZE = 1000
     DELIM = ":"
 
 

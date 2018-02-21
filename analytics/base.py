@@ -4,7 +4,7 @@ import logging
 from settings import MODES, FUNCTIONS, CONSTANTS
 from Exceptions import PWAnalysisException
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 if CONSTANTS.DEBUG:
     logger.setLevel(logging.DEBUG)
 else:
