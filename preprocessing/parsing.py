@@ -3,7 +3,14 @@ import logging
 
 from settings import CONSTANTS, MODES
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
+if CONSTANTS.DEBUG:
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.DEBUG)
+else:
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.WARNING)
+fh = logging.FileHandler(CONSTANTS.LOGFILE)
+fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s:%(message)s'))
+logger.addHandler(fh)
 
 
 class PWDumpParser(object):

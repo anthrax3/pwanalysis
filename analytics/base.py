@@ -4,12 +4,13 @@ import logging
 from settings import MODES, FUNCTIONS, CONSTANTS
 from Exceptions import PWAnalysisException
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 if CONSTANTS.DEBUG:
-    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.DEBUG)
 else:
-    logger.setLevel(logging.WARNING)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.WARNING)
 fh = logging.FileHandler(CONSTANTS.LOGFILE)
+fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s:%(message)s'))
 logger.addHandler(fh)
 
 

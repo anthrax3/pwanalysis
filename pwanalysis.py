@@ -8,12 +8,13 @@ from settings import MODES, CONSTANTS
 from analytics.base import AnalysisEngine
 
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 if CONSTANTS.DEBUG:
-    logger.setLevel(logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.DEBUG)
 else:
-    logger.setLevel(logging.WARNING)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.WARNING)
 fh = logging.FileHandler(CONSTANTS.LOGFILE)
+fh.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s:%(message)s'))
 logger.addHandler(fh)
 
 
@@ -132,7 +133,7 @@ if __name__ == "__main__":
         parser.error('Either the --userpass or --pw flag must be used')
 
     if args.verbose:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(format='%(asctime)s - %(levelname)s:%(message)s', level=logging.INFO)
 
     engine = None
     if args.userpass:
