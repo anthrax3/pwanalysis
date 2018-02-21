@@ -14,6 +14,10 @@ logger.addHandler(fh)
 
 
 class AnalysisModuleTemplate(object):
+    """
+    Template analysis module that all analysis modules must inherit from.
+    Override the analyze_userpass and analyze_pass methods in the subclass for functionality.
+    """
 
     def run(self, dataset, mode):
         results = []
