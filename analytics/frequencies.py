@@ -7,6 +7,8 @@ class FreqAnalyzer(AnalysisModuleTemplate):
     FREQ_USER_NGRAMS = 'user_ngram_freqs'
     FREQ_PASS_NGRAMS = 'pass_ngram_freqs'
 
+    MAX_NGRAM_SIZE = 64
+
     def analyze_userpass(self, dataset, results_manager=None):
         """
         Run all analytics on a user-pass dataset
@@ -66,6 +68,9 @@ class FreqAnalyzer(AnalysisModuleTemplate):
             ngram_freqs = {}
 
         for word in word_list:
+            if len(word) > self.MAX_NGRAM_SIZE:
+                continue
+
             word_ngrams = self._gen_ngrams(word)
 
             for ng in word_ngrams:
