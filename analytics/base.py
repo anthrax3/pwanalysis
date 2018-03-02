@@ -20,21 +20,21 @@ class AnalysisModuleTemplate(object):
     Override the analyze_userpass and analyze_pass methods in the subclass for functionality.
     """
 
-    def run(self, dataset, mode):
+    def run(self, dataset, mode, results_manager=None):
         results = []
 
         if mode == MODES.MODE_USERPASS:
-            results = self.analyze_userpass(dataset)
+            results = self.analyze_userpass(dataset, results_manager=results_manager)
 
         elif mode == MODES.MODE_PASSWORD:
-            results = self.analyze_pass(dataset)
+            results = self.analyze_pass(dataset, results_manager=results_manager)
 
         return results
 
-    def analyze_userpass(self, dataset):
+    def analyze_userpass(self, dataset, results_manager=None):
         return {}
 
-    def analyze_pass(self, dataset):
+    def analyze_pass(self, dataset, results_manager=None):
         return {}
 
 
@@ -70,7 +70,7 @@ class AnalysisEngine(object):
         mod = __import__('.'.join(components[:-1]), globals(), locals(), [components[-1]], 0)
         return getattr(mod, clazz)()
 
-    def run_analysis_modules(self, dataset):
+    def run_analysis_modules(self, dataset, results_manager=None):
         """
         Run all registered analysis modules on the given dataset.
         A registered analysis module is one that is successfully loaded for execution using the dynamic loader
@@ -81,7 +81,7 @@ class AnalysisEngine(object):
         result_set = {}
 
         for name, module in self.modules.items():
-            results = module.run(dataset, self.mode)
+            results = module.run(dataset, self.mode, results_manager=results_manager)
             result_set[name] = results
 
         return result_set

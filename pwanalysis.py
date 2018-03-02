@@ -48,7 +48,7 @@ class Engine(object):
         counter = 1
         for block in pw_parser.get_pw_block(self.block_size):
             print('Executing block (size=%s) number %s' % (self.block_size, counter))
-            r = self.analyzer.run_analysis_modules(block)
+            r = self.analyzer.run_analysis_modules(block, results_manager=self.results_manager)
             self.results_manager.add_result(r)
             counter += 1
 

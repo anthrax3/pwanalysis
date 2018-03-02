@@ -7,7 +7,7 @@ class FreqAnalyzer(AnalysisModuleTemplate):
     FREQ_USER_NGRAMS = 'user_ngram_freqs'
     FREQ_PASS_NGRAMS = 'pass_ngram_freqs'
 
-    def analyze_userpass(self, dataset):
+    def analyze_userpass(self, dataset, results_manager=None):
         """
         Run all analytics on a user-pass dataset
 
@@ -25,7 +25,7 @@ class FreqAnalyzer(AnalysisModuleTemplate):
             self.FREQ_PASS_NGRAMS: pass_ngram_freqs,
         }
 
-    def analyze_pass(self, dataset):
+    def analyze_pass(self, dataset, results_manager=None):
         """
         Run all analytics on a password list
 
