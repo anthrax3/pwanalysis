@@ -103,7 +103,8 @@ class Engine(object):
         max_len = len(sorted(self.results['Frequency Analysis']['pass_ngram_freqs'].keys(), key=lambda x: -len(x))[0])
         for i in range(1, max_len+1):
             tmp = {k: v for k, v in self.results['Frequency Analysis']['pass_ngram_freqs'].items() if len(k) == i}
-            print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])[:10]))
+            # print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])[:10]))
+            print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])))
 
 
 if __name__ == "__main__":
