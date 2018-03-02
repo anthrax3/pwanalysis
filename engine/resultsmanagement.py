@@ -63,20 +63,27 @@ class ResultsManager(object):
         counts = self.results[FUNCTIONS.FREQ_ANALYSIS]['pass_ngram_freqs'].values()
         std_dev = statistics.stdev(counts)
         mean = statistics.mean(counts)
-        threshold = max(1, mean-std_dev)
+        threshold = max(1, mean)
+        median = statistics.median(counts)
+        mode = statistics.mode(counts)
+        #
+        # print('Mean: %s' % mean)
+        # print('Std Dev: %s' % std_dev)
+        # print('Thresh: %s' % threshold)
+        # print('median: %s' % median)
+        # print('mode: %s' % mode)
+        # print('max: %s' % max(counts))
+        # print('min: %s' % min(counts))
 
         for i in range(1, max_len+1):
+
             tmp = {
                 FUNCTIONS.FREQ_ANALYSIS: {
                     'pass_ngram_freqs': {
                         k: v for k, v in self.results[FUNCTIONS.FREQ_ANALYSIS]['pass_ngram_freqs'].items()
                         if len(k) == i and int(v) > threshold}}}
 
-            # tmp = {k: v for k, v in self.results[FUNCTIONS.FREQ_ANALYSIS]['pass_ngram_freqs'].items()
-            #        if len(k) == i and int(v) > threshold}
-
             pruned = self.add_result(tmp, pruned)
-            # print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])))
 
         return pruned
 
@@ -99,5 +106,5 @@ class ResultsManager(object):
 
         for i in range(1, max_len+1):
             tmp = {k: v for k, v in pruned[FUNCTIONS.FREQ_ANALYSIS]['pass_ngram_freqs'].items() if len(k) == i}
-            print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])))
+            print('%2d: %s' % (i, sorted(tmp.items(), key=lambda x: -x[1])[:20]))
 
