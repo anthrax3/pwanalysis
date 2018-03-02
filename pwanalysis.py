@@ -1,6 +1,7 @@
 
 import argparse
 import logging
+import time
 
 from settings import MODES, CONSTANTS
 from analytics.base import AnalysisEngine
@@ -45,14 +46,19 @@ class Engine(object):
 
         print('Starting Analysis Engine...')
 
+        start_time = time.time()
         counter = 1
         for block in pw_parser.get_pw_block(self.block_size):
-            print('Executing block (size=%s) number %s' % (self.block_size, counter))
+            block_start = time.time()
+            print('Executing block (size=%s) number %s. ' % (self.block_size, counter), end='')
             r = self.analyzer.run_analysis_modules(block, results_manager=self.results_manager)
             self.results_manager.add_result(r)
             counter += 1
+            print('Block Evaluation Time: %s' % (time.time() - block_start))
 
         self.results_manager.print_top_ngrams()
+
+        print('Total Program Execution Time: %s' % (time.time() - start_time))
 
 
 if __name__ == "__main__":

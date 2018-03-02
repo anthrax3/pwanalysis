@@ -9,6 +9,12 @@ from collections import Counter
 class ResultsManager(object):
     """
     Result storage class that can be passed between analysis modules and queried for stored results
+
+    TODO:
+        This module is NOT memory-scalable yet (holds all results in memory)
+        Will be setting up a mongoDB instance in the future with rolling writes to solve this problem.
+        Currently can't process a file with more than ~12,000,000 passwords without affecting memory
+        Will need to restructure results manager to hold results by ngram size to make it easier to store in DB
     """
 
     results = None
