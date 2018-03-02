@@ -12,7 +12,11 @@ optional arguments:
   --pw PW              A file that contains a password on each line
   -v, --verbose        Verbose output mode
   --block BLOCK        Block (chunk) size to read from file at a time (for
-                       memory optimization) (Default: 10000) 
+                       memory optimization) (Default: 10000)
+
+examples
+  python pwanalysis.py --userpass resources/userpass.dump
+  python pwanalysis.py --pw resources/ptxt_passwords.dump
 ```
 
 ## Built-In Modules
